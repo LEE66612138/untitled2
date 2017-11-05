@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>放大镜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            border: 0;
+        }
+        #small, #big{
+            float: left;
+            width: 400px;
+            height: 400px;
+
+        }
+        #small {
+            position: relative;
+        }
+        #big {
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+        #drag{
+            width: 200px;
+            height: 200px;
+            background: #cccccc;
+            opacity: 0.6;
+            filter: alpha(opacity=60);
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: move;
+            display: none;
+        }
+        #big-pic {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+        }
+        #mask{
+            width: 400px;
+            height: 400px;
+            background: #ff0000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div id="small">
+        <img src="1.jpg" alt="">
+        <div id = "drag"></div>
+        <div id="mask"></div>
+    </div>
+    <div id="big">
+        <img src="2.jpg" alt="" id="big-pic">
+    </div>
+
+
+    <script>
+        var oDrag = document.getElementById("drag");
+        var oSmall = document.getElementById("small");
+        var oBig = document.getElementById("big");
+        var oBigPic = document.getElementById("big-pic");
+        var oMask = document.getElementById("mask");
+
+        oSmall.onmouseover = function () {
+            oDrag.style.display = 'block';
+            oBig.style.display = 'block';
+        };
+        oSmall.onmouseout = function(){
+            oDrag.style.display = 'none';
+            oBig.style.display = 'none';
+        };
+        oSmall.onmousemove = function(e){
+            e = e || window.event;
+            var left = e.clientX - oDrag.offsetWidth / 2;
+            var top = e.clientY - oDrag.offsetHeight / 2;
+
+        if(  left < 0){
+            left = 0;
+        }
+        if(top<0){
+            top = 0;
+        }
+        var maxX = oSmall.offsetWidth - oDrag.offsetWidth;
+
+        if(left>maxX){
+            left = maxX;
+        }
+        var maxY = oSmall.offsetHeight - oDrag.offsetHeight;
+        if(top>maxY){
+            top = maxY;
+        }
+        oDrag.style.left = left + 'px';
+        oDrag.style.top = top + 'px';
+
+        var fScaleX = left / maxX;
+        var fScaleY = top / maxY;
+        oBigPic.style.left = -fScaleX * (oBigPic.offsetWidth - oBig.offsetWidth) + 'px';
+        oBigPic.style.top = -fScaleY * (oBigPic.offsetHeight - oBig.offsetHeight) +  'px';
+        };
+
+
+</script>
+</body>
+
+</html>
